@@ -31,8 +31,8 @@ RUN dpkg -i vivid.deb
 # add martinit
 RUN echo '%martinit ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 RUN useradd -m martinit
-RUN echo 'root:FLOPS308826' | chpasswd
-RUN echo 'martinit:FLOPS308826' | chpasswd
+RUN echo 'root:mydebian' | chpasswd
+RUN echo 'martinit:mydebian' | chpasswd
 WORKDIR /root
 RUN rm -rf tmp
 
