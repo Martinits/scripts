@@ -16,8 +16,8 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | d
 RUN apt update
 RUN apt upgrade -y
 RUN apt install -y vim neovim zsh git wget iputils-ping iproute2 sudo
-RUN apt install -y python3 gcc g++ make cmake
-RUN apt install -y bat ranger fzf ripgrep fd-find nodejs zoxide thefuck direnv gh exa
+RUN apt install -y build-essential python3 gcc g++ make cmake nodejs npm yarn
+RUN apt install -y bat ranger fzf ripgrep fd-find zoxide thefuck direnv gh exa
 RUN ln -s /usr/bin/fdfind /bin/fd
 # git-delta
 RUN wget https://github.com/dandavison/delta/releases/download/0.14.0/git-delta_0.14.0_amd64.deb -O git-delta.deb
