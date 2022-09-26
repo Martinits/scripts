@@ -13,10 +13,22 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | d
     && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | tee /etc/apt/sources.list.d/github-cli.list > /dev/null
 RUN apt update
 RUN apt upgrade -y
-RUN apt install -y vim neovim zsh git wget iputils-ping iproute2 sudo
-RUN apt install -y build-essential python3 gcc g++ make cmake nodejs npm yarn
+RUN apt install -y vim zsh git wget iputils-ping iproute2 gpg software-properties-common
+RUN apt install -y build-essential python3 python3-dev python3-pip python2 python2-dev cmake man-db
 RUN apt install -y bat ranger fzf ripgrep fd-find zoxide thefuck direnv gh exa
+RUN apt install -y rust-all golang
+RUN apt install -y locales-all && update-locale LANG=en_US.UTF-8
+RUN apt install -y tzdata && ln -s /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
+    && dpkg-reconfigure -f noninteractive tzdata
+RUN apt install -y sudo && echo '%martinit ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 RUN ln -s /usr/bin/fdfind /bin/fd
+# neovim
+RUN sudo add-apt-repository -y ppa:neovim-ppa/stable
+# nodejs npm yarn
+RUN curl -fsSL https://deb.nodesource.com/setup_current.x | bash -
+RUN curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor | sudo tee /usr/share/keyrings/yarnkey.gpg >/dev/null
+RUN echo "deb [signed-by=/usr/share/keyrings/yarnkey.gpg] https://dl.yarnpkg.com/debian stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+RUN apt update && sudo apt install nodejs yarn neovim
 # git-delta
 RUN wget https://github.com/dandavison/delta/releases/download/0.14.0/git-delta_0.14.0_amd64.deb -O git-delta.deb
 RUN dpkg -i git-delta.deb
@@ -27,16 +39,16 @@ RUN tar zxf rga.tgz && mv ripgrep_all-v0.9.6-x86_64-unknown-linux-musl/rga ripgr
 RUN wget "https://github.com/sharkdp/vivid/releases/download/v0.8.0/vivid_0.8.0_amd64.deb" -O vivid.deb
 RUN dpkg -i vivid.deb
 # add martinit
-RUN echo '%martinit ALL=(ALL) NOPASSWD: ALL' >> /etc/sudoers
 RUN useradd -m martinit
-RUN echo 'root:mydebian' | chpasswd
-RUN echo 'martinit:mydebian' | chpasswd
+RUN echo 'root:myubuntu' | chpasswd
+RUN echo 'martinit:myubuntu' | chpasswd
 WORKDIR /root
 RUN rm -rf tmp
 
 USER martinit
 RUN mkdir -p ~/my
 WORKDIR /home/martinit/my
+RUN cargo install tree-sitter-cli
 # zsh things
 RUN sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k
