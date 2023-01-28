@@ -1,3 +1,5 @@
+set -x
+
 source="$1"
 if [ -z "$source" ]; then
     echo need source
@@ -36,7 +38,7 @@ fi
 
 cnt=0
 
-rm -rf file
+trash file
 
 while [ -n "$1" ]; do
     time1="$1"
@@ -59,5 +61,5 @@ while [ $cnt -ne 0 ]; do
     trash "${cnt}.${ext}"
     cnt=$[cnt-1]
 done
-rm -rf file
+trash file
 rename_output "$source"
