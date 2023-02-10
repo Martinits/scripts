@@ -7,12 +7,14 @@ if [ -z "$source" ]; then
 fi
 shift 1
 
-if [ -z $1 ]; then
+if [ -z "$1" ]; then
     echo need time
     exit 1
 fi
 
 if [ "${source##*.}" == 'mkv' ]; then
+    ext="mkv"
+elif [ "${source##*.}" == 'wmv' ]; then
     ext="mkv"
 else
     ext="mp4"
