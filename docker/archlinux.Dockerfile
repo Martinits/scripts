@@ -12,8 +12,8 @@ RUN pacman -S --noconfirm archlinuxcn-keyring
 RUN pacman -Syyu --noconfirm
 RUN pacman -S --noconfirm base-devel
 RUN pacman -S --noconfirm yay neovim vim zsh git wget
-RUN pacman -S --noconfirm cmake man-db python3 python-pip
-RUN pacman -S --noconfirm bat ranger fzf ripgrep ripgrep-all
+RUN pacman -S --noconfirm cmake man-db python python-pip
+RUN pacman -S --noconfirm bat ranger-sixel-git fzf ripgrep ripgrep-all
 RUN pacman -S --noconfirm fd zoxide thefuck direnv github-cli
 RUN pacman -S --noconfirm exa duf dust rust-analyzer
 RUN pacman -S --noconfirm nodejs npm yarn python-neovim
@@ -51,8 +51,6 @@ RUN cp -r .config/bat ~/.config
 RUN cp -r .config/delta ~/.config
 RUN cp -r .config/nvim ~/.config
 RUN cp -r .config/ranger ~/.config
-RUN sed -i 's/set preview_images true/set preview_images false/g' /home/martinit/.config/ranger/rc.conf
-RUN sed -i 's/set preview_images_method sixel//g' /home/martinit/.config/ranger/rc.conf
 
 USER root
 RUN chsh -s /bin/zsh martinit
