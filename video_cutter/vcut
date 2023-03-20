@@ -1,6 +1,9 @@
 #! /usr/bin/bash
 set -x
 
+cdf=concat_demuxer_file
+output=tmp_output
+
 source="$1"
 if [ -z "$source" ]; then
     echo need source
@@ -21,48 +24,26 @@ else
     ext="mp4"
 fi
 
-rename_output(){
-    mv "output.${ext}" "${1%.*}.${ext}"
-}
-
-if [ $# -eq 1 ]; then
-    ffmpeg -ss "$1" -i "$source" -c copy "output.${ext}"
-    trash "$source"
-    rename_output "$source"
-    exit 0
+if [[ -f $cdf ]];
+then
+    trash $cdf
+elif [[ -e $cdf ]];
+then
+    echo "conflicted \'concat_demuxer_file\' filename!"
+    exit 1
 fi
-
-if [ $# -eq 2 ]; then
-    ffmpeg -ss "$1" -to "$2" -i "$source" -c copy "output.${ext}"
-    trash "$source"
-    rename_output "$source"
-    exit 0
-fi
-
-cnt=0
-
-trash file
 
 while [ -n "$1" ]; do
-    time1="$1"
+    echo "file '$source'" >> $cdf
+    echo "inpoint $1" >> $cdf
     shift 1
-    cnt=$[cnt+1]
-    outputname="${cnt}.${ext}"
-    if [ -z "$1" ]; then
-        ffmpeg -ss "$time1" -i "$source" -c copy "$outputname"
-    else
-        time2="$1"
+    if [ -n "$1" ]; then
+        echo "outpoint $1" >> $cdf
         shift 1
-        ffmpeg -ss "$time1" -to "$time2" -i "$source" -c copy "$outputname"
     fi
-    echo "file '$outputname'" >> file
 done
 
-ffmpeg -f concat -i file -c copy "output.${ext}"
+ffmpeg -f concat -i $cdf -c copy "${output}.${ext}"
 trash "$source"
-while [ $cnt -ne 0 ]; do
-    trash "${cnt}.${ext}"
-    cnt=$[cnt-1]
-done
-trash file
-rename_output "$source"
+trash "$cdf"
+mv "${output}.${ext}" "${source%.*}.${ext}"
