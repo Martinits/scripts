@@ -2,9 +2,9 @@ FROM archlinux:latest
 USER root
 WORKDIR /root/tmp
 RUN mv /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.old
-RUN echo 'Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch' > /etc/pacman.d/mirrorlist
+RUN echo 'Server = https://mirrors.ustc.edu.cn/archlinux/$repo/os/$arch' > /etc/pacman.d/mirrorlist
 RUN echo '[archlinuxcn]' >> /etc/pacman.conf
-RUN echo 'Server = https://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/$arch' >> /etc/pacman.conf
+RUN echo 'Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch' >> /etc/pacman.conf
 RUN sed -i 's/^#Color$/Color/g' /etc/pacman.conf
 RUN pacman-key --init
 RUN pacman -Syy --noconfirm
@@ -13,7 +13,7 @@ RUN pacman -Syyu --noconfirm
 RUN pacman -S --noconfirm base-devel
 RUN pacman -S --noconfirm yay neovim vim zsh git wget
 RUN pacman -S --noconfirm cmake man-db python python-pip
-RUN pacman -S --noconfirm bat ranger-sixel-git fzf ripgrep ripgrep-all
+RUN pacman -S --noconfirm bat ranger-git fzf ripgrep ripgrep-all
 RUN pacman -S --noconfirm fd zoxide thefuck direnv github-cli
 RUN pacman -S --noconfirm exa duf dust rust-analyzer
 RUN pacman -S --noconfirm nodejs npm yarn python-neovim
