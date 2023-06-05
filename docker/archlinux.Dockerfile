@@ -13,12 +13,11 @@ RUN pacman -Syyu --noconfirm
 RUN pacman -S --noconfirm base-devel
 RUN pacman -S --noconfirm yay neovim vim zsh git wget
 RUN pacman -S --noconfirm cmake man-db python python-pip
-RUN pacman -S --noconfirm bat ranger-git fzf ripgrep ripgrep-all
+RUN pacman -S --noconfirm bat fzf ripgrep ripgrep-all
 RUN pacman -S --noconfirm fd zoxide thefuck direnv github-cli
 RUN pacman -S --noconfirm exa duf dust rust-analyzer
-RUN pacman -S --noconfirm nodejs npm yarn python-neovim
+RUN pacman -S --noconfirm nodejs npm yarn python-neovim pyright ccls
 RUN pacman -S --noconfirm git-delta vivid tree-sitter translate-shell
-RUN npm i -g neovim
 RUN mv /etc/locale.gen /etc/locale.gen.old
 RUN echo 'en_US.UTF-8 UTF-8' > /etc/locale.gen
 RUN locale-gen
@@ -47,10 +46,7 @@ RUN git submodule init && git submodule update
 RUN cp .zshrc .func.zsh .fzf.zsh .gdbinit .gitconfig /home/martinit
 RUN echo 'export TERM=alacritty' >> /home/martinit/.zshrc
 RUN mkdir ~/.config
-RUN cp -r .config/bat ~/.config
-RUN cp -r .config/delta ~/.config
-RUN cp -r .config/nvim ~/.config
-RUN cp -r .config/ranger ~/.config
+RUN cp -r .config/{bat,delta,nvim,ranger} ~/.config
 
 USER root
 RUN chsh -s /bin/zsh martinit
