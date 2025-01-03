@@ -11,9 +11,9 @@ RUN pacman -Syy --noconfirm
 RUN pacman -S --noconfirm archlinuxcn-keyring
 RUN pacman -Syyu --noconfirm
 RUN pacman -S --noconfirm base-devel
-RUN pacman -S --noconfirm yay neovim vim zsh git wget
+RUN pacman -S --noconfirm yay neovim vim zsh git wget yazi
 RUN pacman -S --noconfirm cmake man-db python python-pip
-RUN pacman -S --noconfirm bat fzf ripgrep ripgrep-all
+RUN pacman -S --noconfirm bat fzf ripgrep ripgrep-all poppler
 RUN pacman -S --noconfirm fd zoxide thefuck direnv github-cli
 RUN pacman -S --noconfirm exa duf dust rust-analyzer
 RUN pacman -S --noconfirm nodejs npm yarn python-neovim pyright ccls
@@ -46,7 +46,12 @@ RUN git submodule init && git submodule update
 RUN cp .zshrc .func.zsh .fzf.zsh .gdbinit .gitconfig /home/martinit
 RUN echo 'export TERM=alacritty' >> /home/martinit/.zshrc
 RUN mkdir ~/.config
-RUN cp -r .config/{bat,delta,nvim,ranger} ~/.config
+RUN cp -r .config/{bat,delta,nvim,ranger,yazi} ~/.config
+
+# yazi plugin
+RUN ya pack -a yazi-rs/plugins:smart-enter
+RUN ya pack -a yazi-rs/plugins:git
+RUN ya pack -a dedukun/bookmarks
 
 USER root
 RUN chsh -s /bin/zsh martinit
